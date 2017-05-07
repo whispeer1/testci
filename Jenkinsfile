@@ -5,8 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                bat "chcp 65001"
-                bat " chcp 65001 gulp"
+                bat "run.bat"
             }
         }
         stage('Test') {

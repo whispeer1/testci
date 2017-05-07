@@ -1,2 +1,2 @@
-chcp 650001
+chcp 65001
 gulp
