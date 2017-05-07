@@ -4,10 +4,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                dir("ololol")
                 echo 'Building..'
                 bat "run.bat"
                 echo pwd()
+                echo ${BRANCH_NAME}
             }
         }
         stage('Test') {
