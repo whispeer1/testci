@@ -5,7 +5,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                bat "chcp 1251"
                 bat "gulp"
             }
         }
