@@ -6,6 +6,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 bat "run.bat"
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
             }
         }
         stage('Test') {
