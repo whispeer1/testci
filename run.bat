@@ -1,2 +1,2 @@
 chcp 65001
-gulp
+node node_modules\gulp\bin\gulp.js
