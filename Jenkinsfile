@@ -7,7 +7,7 @@ pipeline {
                 echo 'Building..'
                 bat "run.bat"
                 echo pwd()
-                echo env
+                echo env.BRANCH_NAME
             }
         }
         stage('Test') {
