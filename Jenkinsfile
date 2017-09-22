@@ -6,7 +6,6 @@ pipeline{
         PROJECT_NAME = 'bitrix'
         FLOCK_BOT_URL = 'http://88.198.14.182:8009'
         K8S_MASTER_URL = 'https://88.198.14.182:6443'
-        TASK_NAME = 'task666'
     }
 
     stages{
@@ -19,7 +18,11 @@ pipeline{
                         sh("\\cp -R /home/hlbx.ru/* .")
                         sh("git checkout master")
                         sh("git pull origin")
-                       // sh("git merge <hash> --squash") 
+                    //    sh("git merge ${params.taskName} --squash > git_result") 
+                    //    def output = readFile('git_result').trim()
+                    //    if (output.indexOf("Automatic merge failed") > -1) {
+                    //        throw new IOException();
+                    //    }
                       //  notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
                        // notifyAboutFailedStep("PRE_BUILD")
@@ -28,45 +31,28 @@ pipeline{
                 }
             }
         }
-  //      stage('Build'){
-  //          steps {
-  //              script{
-  //                  echo "Build"
-  //                 // notifyAboutSuccessStep("BUILD");
-  //              }
-  //          }
-  //      }
-//        stage('Unit-Test'){
-//            steps {
-//                echo "Unit-Test"
-//                sh("nodejs node_modules/mocha/bin/mocha")
-//                notifyAboutSuccessStep("UNIT_TEST");
-//            }
-//        }
-     //   stage('Create And Push Docker Image'){
-     //       steps {
-     //           script{
-     //               echo "Docker Build"
-     //               def dockerImage = docker.build "${PROJECT_NAME}:${TASK_NAME}"    
-     //               echo "Docker Push"
-     //               docker.withRegistry("http://localhost:5000"){
-     //                   dockerImage.push "${TASK_NAME}"
-     //               }              
-     //           }
-     //       }
-     //   }
+        stage('Create And Push Docker Image'){
+            steps {
+                script{
+                    try{
+                        echo "Docker Build"
+                        def dockerImage = docker.build "${PROJECT_NAME}:${params.taskName}"    
+                        echo "Docker Push"
+                        docker.withRegistry("http://localhost:5000"){
+                            dockerImage.push "${params.taskName}"
+                        }   
+                    }catch(error){
+                        throw error
+                    }           
+                }
+            }
+        }
       stage("Deploy to K8S"){
           steps{
                 script{
-                    sh("cp ../depl_bitrix.yaml .")
-                    sh("cp ../sql.yaml .")
-                   // sh("sed -i -e 's/deployment_name/bitrix/g' depl_bitrix.yaml")
-                   // sh("sed -i -e 's/image_name/bitrix:${TASK_NAME}/g' depl_bitrix.yaml")
-                   // sh("sed -i -e 's/port/80/g' depl_bitrix.yaml")
-                   // sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f depl_bitrix.yaml")
-                   // sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f sql.yaml")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create namespace task666")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=task666 run bitrix --image=localhost:5000/bitrix:task666 --port=8080")
+                  
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create namespace ${params.taskName}")
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=task666 run bitrix --image=localhost:5000/bitrix:${params.taskName} --port=8080")
                     sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=task666 run mysql-bitrix --image=localhost:5000/db_v32 --port=3306")
                     sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=task666 expose deployment/mysql-bitrix --type='NodePort' --port 3306")
 
@@ -83,7 +69,7 @@ pipeline{
                     waitUntil {    
                         echo "request"
                         sleep 10
-                        def req =  httpRequest FLOCK_BOT_URL+'/jenkins?taskName=task123'
+                        def req =  httpRequest FLOCK_BOT_URL+'/jenkins?taskName='+params.taskName
                         if (req.content == "ok"){
                             return true
                         }else{
@@ -98,7 +84,7 @@ pipeline{
 }
 
 def notifyFlockBot(taskName, stageResult, stageName, attachment){
-    sh('curl -H "Content-Type: application/json" -k -X PUT -d \'{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}\' ${FLOCK_BOT_URL}/task?name=${taskName}')
+    sh('curl -H "Content-Type: application/json" -k -X PUT -d \'{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}\' ${FLOCK_BOT_URL}/task?name=${params.taskName}')
 }
 
 def notifyAboutSuccessStep(stage){
