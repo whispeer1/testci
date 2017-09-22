@@ -6,7 +6,7 @@ pipeline{
         PROJECT_NAME = 'bitrix'
         FLOCK_BOT_URL = 'http://88.198.14.182:8009'
         K8S_MASTER_URL = 'https://88.198.14.182:6443'
-        TASK_NAME = 'task123'
+        TASK_NAME = 'task666'
     }
 
     stages{
@@ -42,29 +42,30 @@ pipeline{
 //                notifyAboutSuccessStep("UNIT_TEST");
 //            }
 //        }
-    //    stage('Create And Push Docker Image'){
-    //        steps {
-    //            script{
-    //                echo "Docker Build"
-    //                def dockerImage = docker.build "${PROJECT_NAME}:task123"    
-    //                echo "Docker Push"
-    //                docker.withRegistry("http://localhost:5000"){
-    //                    dockerImage.push "task123"
-    //                }   
-    //                //notifyAboutSuccessStep("DOCKER");              
-    //            }
-    //        }
-    //    }
+        stage('Create And Push Docker Image'){
+            steps {
+                script{
+                    echo "Docker Build"
+                    def dockerImage = docker.build "${PROJECT_NAME}:${TASK_NAME}"    
+                    echo "Docker Push"
+                    docker.withRegistry("http://localhost:5000"){
+                        dockerImage.push "${TASK_NAME}"
+                    }              
+                }
+            }
+        }
       stage("Deploy to K8S"){
           steps{
-              script{
-              //  sh ("cp home/.kube/config ")
-
-                sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f ../depl.yaml")
-                echo "Deploy to kubernetes"
+                script{
+                    sh("cp ../depl_bitrix.yaml .")
+                    sh("sed -i -e 's/deployment_name/bitrix/g' depl_bitrix.yaml")
+                    sh("sed -i -e 's/image_name/bitrix:${TASK_NAME}/g' depl_bitrix.yaml")
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f depl_bitrix.yaml")
+                   // sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f serv_sql.yaml")
+                    echo "Deploy to kubernetes"
 
                   //notifyAboutSuccessStep("DEPLOY")
-              }
+                }
           }
       }
         stage("Approve"){
