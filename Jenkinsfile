@@ -42,40 +42,40 @@ pipeline{
 //                notifyAboutSuccessStep("UNIT_TEST");
 //            }
 //        }
-        stage('Create And Push Docker Image'){
-            steps {
-                script{
-                    echo "Docker Build"
-                    def dockerImage = docker.build "${PROJECT_NAME}:task123"    
-                    echo "Docker Push"
-                    docker.withRegistry("http://localhost:5000"){
-                        dockerImage.push "task123"
-                    }   
-                    //notifyAboutSuccessStep("DOCKER");              
-                }
-            }
-        }
-    //    stage("Deploy to K8S"){
-    //        steps{
+    //    stage('Create And Push Docker Image'){
+    //        steps {
     //            script{
-    //                echo "Deploy to kubernetes"
-    //                sh('curl -X POST -H "Content-Type: application/json" -k https://35.192.233.50/apis/extensions/v1beta1/namespaces/default/deployments -d \'{"apiVersion" : "extensions/v1beta1","kind": "Deployment","metadata": {"name" : "nginx-deployment"},"spec": {"replicas": 3,"template": {"metadata": {"labels": {"app": "nginx"}},"spec": {"containers" : [{"name": "nginx","image": "nginx:1.7.9","ports": [{"containerPort": 80}]}]}}}}\'')
-    //                
-    //                waitUntil{    
-    //                    sleep 5
-    //                    sh('curl -X GET https://35.192.233.50/apis/extensions/v1beta1/namespaces/default/deployments -k  > result ')
-    //                    def output = readFile('result').trim()
-    //                    if (output.indexOf("Available") > -1) {
-    //                        return true
-    //                    }else{
-    //                        return false
-    //                    }
-    //                    
-    //                }
-    //                notifyAboutSuccessStep("DEPLOY")
+    //                echo "Docker Build"
+    //                def dockerImage = docker.build "${PROJECT_NAME}:task123"    
+    //                echo "Docker Push"
+    //                docker.withRegistry("http://localhost:5000"){
+    //                    dockerImage.push "task123"
+    //                }   
+    //                //notifyAboutSuccessStep("DOCKER");              
     //            }
     //        }
     //    }
+      stage("Deploy to K8S"){
+          steps{
+              script{
+                  echo "Deploy to kubernetes"
+                  sh('curl -X POST -H "Content-Type: application/json" -k https://88.198.14.182:6443/apis/extensions/v1beta1/namespaces/default/deployments -d \'{"apiVersion" : "extensions/v1beta1","kind": "Deployment","metadata": {"name" : "nginx-deployment"},"spec": {"replicas": 3,"template": {"metadata": {"labels": {"app": "nginx"}},"spec": {"containers" : [{"name": "nginx","image": "nginx:1.7.9","ports": [{"containerPort": 80}]}]}}}}\'')
+                  
+                  waitUntil{    
+                      sleep 5
+                      sh('curl -X GET https://88.198.14.182:6443/apis/extensions/v1beta1/namespaces/default/deployments -k  > result ')
+                      def output = readFile('result').trim()
+                      if (output.indexOf("Available") > -1) {
+                          return true
+                      }else{
+                          return false
+                      }
+                      
+                  }
+                  //notifyAboutSuccessStep("DEPLOY")
+              }
+          }
+      }
         stage("Approve"){
             steps{
                 script{
