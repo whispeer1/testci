@@ -90,9 +90,9 @@ def notifyFlockBot(taskName, stageResult, stageName, attachment){
 }
 
 def notifyAboutSuccessStep(stage){
-    notifyFlockBot(TASK_NAME, "done", stage, "")
+    notifyFlockBot(params.taskName, "done", stage, "")
 }
 def notifyAboutFailedStep(stage){
-    notifyFlockBot(TASK_NAME, "fail", stage, "")
+    notifyFlockBot(params.taskName, "fail", stage, "")
 }
 
