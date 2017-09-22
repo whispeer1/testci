@@ -46,7 +46,7 @@ pipeline{
             steps {
                 script{
                     echo "Docker Build"
-                    def dockerImage = docker.build "localhost:5000/${PROJECT_NAME}:${params.taskName}"    
+                    def dockerImage = docker.build "${PROJECT_NAME}:${params.taskName}"    
                     echo "Docker Push"
                    // docker.withRegistry("", '2a6aae12-b4d2-49c5-b002-be8980fb8142'){
                         dockerImage.push "localhost:5000/${params.taskName}"
