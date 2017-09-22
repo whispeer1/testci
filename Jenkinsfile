@@ -18,7 +18,7 @@ pipeline{
                         echo "npm install"
                         // copy default repository state 
                         //sh("mkdir ")
-                        sh("\cp -R /home/hlbx.ru/* .")
+                        sh("\\cp -R /home/hlbx.ru/* .")
                         sh("git checkout master")
                         sh("git pull origin")
                       //  notifyAboutSuccessStep("PRE_BUILD")
