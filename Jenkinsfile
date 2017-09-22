@@ -23,9 +23,9 @@ pipeline{
                     //    if (output.indexOf("Automatic merge failed") > -1) {
                     //        throw new IOException();
                     //    }
-                      //  notifyAboutSuccessStep("PRE_BUILD")
+                        notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
-                      //  notifyAboutFailedStep("PRE_BUILD")
+                        notifyAboutFailedStep("PRE_BUILD")
                         throw error
                     }
                 }
@@ -86,7 +86,7 @@ pipeline{
 }
 
 def notifyFlockBot(taskName, stageResult, stageName, attachment){
-    sh('curl -H "Content-Type: application/json" -k -X PUT -d \'{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}\' ${FLOCK_BOT_URL}/task?name=${params.taskName}')
+    sh('curl -H "Content-Type: application/json" -k -X PUT -d \'{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}\' ${FLOCK_BOT_URL}/task?name=' + taskName)
 }
 
 def notifyAboutSuccessStep(stage){
