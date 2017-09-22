@@ -46,11 +46,11 @@ pipeline{
             steps {
                 script{
                     echo "Docker Build"
-                    def dockerImage = docker.build "${PROJECT_NAME}:${params.taskName}"    
+                    def dockerImage = docker.build "${PROJECT_NAME}:task123"    
                     echo "Docker Push"
-                   // docker.withRegistry("", '2a6aae12-b4d2-49c5-b002-be8980fb8142'){
-                        dockerImage.push "localhost:5000/${params.taskName}"
-                    //}   
+                    docker.withRegistry([url: 'localhots:5000']){
+                        dockerImage.push "task123"
+                    }   
                     //notifyAboutSuccessStep("DOCKER");              
                 }
             }
