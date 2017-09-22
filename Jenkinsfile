@@ -23,9 +23,9 @@ pipeline{
                     //    if (output.indexOf("Automatic merge failed") > -1) {
                     //        throw new IOException();
                     //    }
-                        notifyAboutSuccessStep("PRE_BUILD")
+                      //  notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
-                        notifyAboutFailedStep("PRE_BUILD")
+                      //  notifyAboutFailedStep("PRE_BUILD")
                         throw error
                     }
                 }
@@ -41,9 +41,9 @@ pipeline{
                         docker.withRegistry("http://localhost:5000"){
                             dockerImage.push "${params.taskName}"
                         }   
-                        notifyAboutSuccessStep("DOCKER")
+                     //   notifyAboutSuccessStep("DOCKER")
                     }catch(error){
-                        notifyAboutFailedStep("DOCKER")
+                     //   notifyAboutFailedStep("DOCKER")
                         throw error
                     }           
                 }
@@ -60,7 +60,7 @@ pipeline{
 
                     sleep 60
                     echo "Deploy to kubernetes"
-                    notifyAboutSuccessStep("DEPLOY")
+                   // notifyAboutSuccessStep("DEPLOY")
                   //notifyAboutSuccessStep("DEPLOY")
                 }
           }
