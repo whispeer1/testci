@@ -49,22 +49,26 @@ pipeline{
                 }
             }
         }
-      stage("Deploy to K8S"){
-          steps{
+        stage("Deploy to K8S"){
+            steps{
                 script{
-                  
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create namespace ${params.taskName}")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} run bitrix --image=localhost:5000/bitrix:${params.taskName} --port=8080")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} run mysql-bitrix --image=localhost:5000/db_v32 --port=3306")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} expose deployment/mysql-bitrix --type='NodePort' --port 3306")
+                    try {
+                        sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create namespace ${params.taskName}")
+                        sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} run bitrix --image=localhost:5000/bitrix:${params.taskName} --port=8080")
+                        sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} run mysql-bitrix --image=localhost:5000/db_v32 --port=3306")
+                        sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} expose deployment/mysql-bitrix --type='NodePort' --port 3306")
 
-                    sleep 60
-                    echo "Deploy to kubernetes"
-                    notifyAboutSuccessStep("DEPLOY")
-                  //notifyAboutSuccessStep("DEPLOY")
+                        sleep 60
+                        echo "Deploy to kubernetes"
+                        notifyAboutSuccessStep("DEPLOY")                        
+                    }catch(error) {
+                        echo "error DEPLOY"
+                        notifyAboutFailedStep("DEPLOY")
+                        throw error
+                    }
                 }
-          }
-      }
+            }
+        }
         stage("Approve"){
             steps{
                 script{
