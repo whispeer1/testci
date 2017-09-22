@@ -59,8 +59,8 @@ pipeline{
           steps{
               script{
               //  sh ("cp home/.kube/config ")
-                sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf'")
-                sh("kubectl cluster-info")
+                sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf'  cluster-info")
+              
                
                   echo "Deploy to kubernetes"
            //       sh('curl -X POST -H "Content-Type: application/json" --header "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZWZhdWx0LXRva2VuLXBqZGJyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImRlZmF1bHQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJjY2E1NTRjZi05ZWVjLTExZTctYTNiZS00NDhhNWI1ZGQ0ZTIiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06ZGVmYXVsdCJ9.SjkLG7m8m7yGWdRh_J0VAPZEmNUA7mL9CEwBDbd92YY5qFo5yql_s2aVN9ag5WOTrco0ttcMWQ7h5OGMcq8R6OJvNJYgvtLnsWpgNM1NqU6xYVXZnj3is7V8Ugq83fcMe4Ude56OC8Emaucjm45xF5SvysStnQWYN9vGnDO8u9y0GgNLsj5OzqFzXtUXwcx0p52SabAI_5ViKVPqwVn-DF0rApEL_XR6_eN9TJlP19nThUMmOGJDIsx81ep5YOWqo_PeQJ0Xd3TSfWOQj0dysZ7pkYkfNSDN-nnuSWFb-insecure" --3lS7NhisRLGXijG4KftGcCdpaFRiu0oSMd1xG3a1vmtEg -k https://88.198.14.182:6443/apis/extensions/v1beta1/namespaces/default/deployments -d \'{"apiVersion" : "extensions/v1beta1","kind": "Deployment","metadata": {"name" : "nginx-deployment"},"spec": {"replicas": 3,"template": {"metadata": {"labels": {"app": "nginx"}},"spec": {"containers" : [{"name": "nginx","image": "nginx:1.7.9","ports": [{"containerPort": 80}]}]}}}}\'')
