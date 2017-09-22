@@ -65,7 +65,7 @@ pipeline{
                    // sh("sed -i -e 's/port/80/g' depl_bitrix.yaml")
                    // sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f depl_bitrix.yaml")
                    // sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f sql.yaml")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' run bitrix --image=localhost:5000/bitrix --port=8080")
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' run bitrix --image=localhost:5000/bitrix:task666 --port=8080")
                     sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' run mysql-bitrix --image=localhost:5000/db_v32 --port=3306")
                     sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' expose deployment/mysql-bitrix --type='NodePort' --port 3306")
 
