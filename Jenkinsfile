@@ -48,7 +48,7 @@ pipeline{
                     echo "Docker Build"
                     def dockerImage = docker.build "${PROJECT_NAME}:task123"    
                     echo "Docker Push"
-                    docker.withRegistry("localhost:5000"){
+                    docker.withRegistry("http://localhost:5000"){
                         dockerImage.push "task123"
                     }   
                     //notifyAboutSuccessStep("DOCKER");              
