@@ -18,6 +18,7 @@ pipeline{
                         echo "npm install"
                         // copy default repository state 
                         //sh("mkdir ")
+                        deleteDir()
                         sh("cp -R /home/hlbx.ru/* .")
                         sh("git checkout master")
                         sh("git pull origin")
