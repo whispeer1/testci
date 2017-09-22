@@ -41,9 +41,9 @@ pipeline{
                         docker.withRegistry("http://localhost:5000"){
                             dockerImage.push "${params.taskName}"
                         }   
-                     //   notifyAboutSuccessStep("DOCKER")
+                        notifyAboutSuccessStep("DOCKER")
                     }catch(error){
-                     //   notifyAboutFailedStep("DOCKER")
+                        notifyAboutFailedStep("DOCKER")
                         throw error
                     }           
                 }
@@ -60,7 +60,7 @@ pipeline{
 
                     sleep 60
                     echo "Deploy to kubernetes"
-                   // notifyAboutSuccessStep("DEPLOY")
+                    notifyAboutSuccessStep("DEPLOY")
                   //notifyAboutSuccessStep("DEPLOY")
                 }
           }
@@ -73,6 +73,7 @@ pipeline{
                         sleep 10
                         def req =  httpRequest FLOCK_BOT_URL+'/jenkins?taskName='+params.taskName
                         if (req.content == "ok"){
+                            notifyAboutSuccessStep("APPROVE")
                             return true
                         }else{
                             return false
