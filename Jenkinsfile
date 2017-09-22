@@ -10,7 +10,7 @@ pipeline{
     }
 
     stages{
-        stage('Pre-Build'){
+        stage('Merge branch'){
             steps{ 
                 script{  
                     echo "Merge with RC"
@@ -19,6 +19,7 @@ pipeline{
                         sh("\\cp -R /home/hlbx.ru/* .")
                         sh("git checkout master")
                         sh("git pull origin")
+                       // sh("git merge <hash> --squash") 
                       //  notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
                        // notifyAboutFailedStep("PRE_BUILD")
@@ -27,14 +28,14 @@ pipeline{
                 }
             }
         }
-        stage('Build'){
-            steps {
-                script{
-                    echo "Build"
-                   // notifyAboutSuccessStep("BUILD");
-                }
-            }
-        }
+  //      stage('Build'){
+  //          steps {
+  //              script{
+  //                  echo "Build"
+  //                 // notifyAboutSuccessStep("BUILD");
+  //              }
+  //          }
+  //      }
 //        stage('Unit-Test'){
 //            steps {
 //                echo "Unit-Test"
@@ -42,18 +43,18 @@ pipeline{
 //                notifyAboutSuccessStep("UNIT_TEST");
 //            }
 //        }
-        stage('Create And Push Docker Image'){
-            steps {
-                script{
-                    echo "Docker Build"
-                    def dockerImage = docker.build "${PROJECT_NAME}:${TASK_NAME}"    
-                    echo "Docker Push"
-                    docker.withRegistry("http://localhost:5000"){
-                        dockerImage.push "${TASK_NAME}"
-                    }              
-                }
-            }
-        }
+     //   stage('Create And Push Docker Image'){
+     //       steps {
+     //           script{
+     //               echo "Docker Build"
+     //               def dockerImage = docker.build "${PROJECT_NAME}:${TASK_NAME}"    
+     //               echo "Docker Push"
+     //               docker.withRegistry("http://localhost:5000"){
+     //                   dockerImage.push "${TASK_NAME}"
+     //               }              
+     //           }
+     //       }
+     //   }
       stage("Deploy to K8S"){
           steps{
                 script{
