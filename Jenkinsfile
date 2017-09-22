@@ -3,7 +3,7 @@ pipeline{
     
     //передавать как параметры джоба
     environment{
-        PROJECT_NAME = 'some_project'
+        PROJECT_NAME = 'bitrix'
         FLOCK_BOT_URL = 'http://88.198.14.182:8009'
         K8S_MASTER_URL = 'https://88.198.14.182:6443'
         TASK_NAME = 'task123'
@@ -15,9 +15,7 @@ pipeline{
                 script{  
                     echo "Merge with RC"
                     try{   
-                        echo "npm install"
-                        // copy default repository state 
-                        //sh("mkdir ")
+                        echo "--copy default repository state "
                         sh("\\cp -R /home/hlbx.ru/* .")
                         sh("git checkout master")
                         sh("git pull origin")
@@ -44,19 +42,19 @@ pipeline{
 //                notifyAboutSuccessStep("UNIT_TEST");
 //            }
 //        }
-      //  stage('Create And Push Docker Image'){
-      //      steps {
-      //          script{
-      //              echo "Docker Build"
-      //              def dockerImage = docker.build "whispeer/${PROJECT_NAME}:${params.taskName}"    
-      //              echo "Docker Push"
-      //              docker.withRegistry("", '2a6aae12-b4d2-49c5-b002-be8980fb8142'){
-      //                  dockerImage.push params.taskName
-      //              }   
-      //              notifyAboutSuccessStep("DOCKER");              
-      //          }
-      //      }
-      //  }
+        stage('Create And Push Docker Image'){
+            steps {
+                script{
+                    echo "Docker Build"
+                    def dockerImage = docker.build "localhost:5000/${PROJECT_NAME}:${params.taskName}"    
+                    echo "Docker Push"
+                   // docker.withRegistry("", '2a6aae12-b4d2-49c5-b002-be8980fb8142'){
+                        dockerImage.push "localhost:5000/${params.taskName}"
+                    //}   
+                    //notifyAboutSuccessStep("DOCKER");              
+                }
+            }
+        }
     //    stage("Deploy to K8S"){
     //        steps{
     //            script{
