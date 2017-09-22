@@ -16,7 +16,8 @@ pipeline{
                     echo "Merge with RC"
                     try{   
                         echo "npm install"
-                        sh("cp -R /home/hlbx.ru .")
+                        // copy default repository state 
+                        sh("cp -R /home/hlbx.ru/* new/")
                         sh("git checkout master")
                         sh("git pull origin")
                       //  notifyAboutSuccessStep("PRE_BUILD")
