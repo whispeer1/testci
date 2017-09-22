@@ -54,9 +54,9 @@ pipeline{
                 script{
                   
                     sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create namespace ${params.taskName}")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=task666 run bitrix --image=localhost:5000/bitrix:${params.taskName} --port=8080")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=task666 run mysql-bitrix --image=localhost:5000/db_v32 --port=3306")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=task666 expose deployment/mysql-bitrix --type='NodePort' --port 3306")
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} run bitrix --image=localhost:5000/bitrix:${params.taskName} --port=8080")
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} run mysql-bitrix --image=localhost:5000/db_v32 --port=3306")
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} expose deployment/mysql-bitrix --type='NodePort' --port 3306")
 
                     sleep 60
                     echo "Deploy to kubernetes"
