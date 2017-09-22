@@ -60,11 +60,13 @@ pipeline{
                 script{
                     sh("cp ../depl_bitrix.yaml .")
                     sh("cp ../sql.yaml .")
-                    sh("sed -i -e 's/deployment_name/bitrix/g' depl_bitrix.yaml")
-                    sh("sed -i -e 's/image_name/bitrix:${TASK_NAME}/g' depl_bitrix.yaml")
-                    sh("sed -i -e 's/port/80/g' depl_bitrix.yaml")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f depl_bitrix.yaml")
-                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f sql.yaml")
+                   // sh("sed -i -e 's/deployment_name/bitrix/g' depl_bitrix.yaml")
+                   // sh("sed -i -e 's/image_name/bitrix:${TASK_NAME}/g' depl_bitrix.yaml")
+                   // sh("sed -i -e 's/port/80/g' depl_bitrix.yaml")
+                   // sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f depl_bitrix.yaml")
+                   // sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create -f sql.yaml")
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' run bitrix --image=localhost:5000/bitrix --port=8080")
+                    sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' run mysql-bitrix --image=localhost:5000/db_v32 --port=3306")
                     sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' expose deployment/mysql-bitrix --type='NodePort' --port 3306")
 
                     sleep 60
