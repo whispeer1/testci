@@ -17,8 +17,8 @@ pipeline{
                     try{   
                         echo "npm install"
                         sh("cp -R /home/hlbx.ru .")
-                        sh("git git checkout master")
-                        sh("git git pull origin")
+                        sh("git checkout master")
+                        sh("git pull origin")
                       //  notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
                        // notifyAboutFailedStep("PRE_BUILD")
