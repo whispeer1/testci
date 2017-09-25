@@ -11,7 +11,7 @@ pipeline{
 
     stages{
         stage('Pre build'){
-            steps{ 
+            steps{ gasrgw
                 script{  1
                     echo "Merge with RC"
                     try{   
