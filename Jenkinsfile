@@ -6,12 +6,13 @@ pipeline{
         PROJECT_NAME = 'bitrix'
         FLOCK_BOT_URL = 'http://88.198.14.182:8009'
         K8S_MASTER_URL = 'https://88.198.14.182:6443'
+        TOKEN = "1234567890"
     }
 
     stages{
         stage('Pre build'){
             steps{ 
-                script{  
+                script{  1
                     echo "Merge with RC"
                     try{   
                         echo "--copy default repository state "
@@ -75,7 +76,7 @@ pipeline{
                     waitUntil {    
                         echo "request"
                         sleep 10
-                        def req =  httpRequest FLOCK_BOT_URL+'/jenkins?taskName='+params.taskName
+                        def req =  httpRequest FLOCK_BOT_URL+'/jenkins?taskName=' + params.taskName + "&token=${TOKEN}"
                         if (req.content == "ok"){
                             notifyAboutSuccessStep("APPROVE")
                             return true
@@ -91,7 +92,7 @@ pipeline{
 }
 
 def notifyFlockBot(taskName, stageResult, stageName, attachment){
-    sh('curl -H "Content-Type: application/json" -k -X PUT -d \'{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}\' ${FLOCK_BOT_URL}/task?name=' + taskName)
+    sh('curl -H "Content-Type: application/json" -k -X PUT -d \'{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}\' ${FLOCK_BOT_URL}/task?name=' + taskName + "&token=${TOKEN}")
 }
 
 def notifyAboutSuccessStep(stage){
