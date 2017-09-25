@@ -11,8 +11,8 @@ pipeline{
 
     stages{
         stage('Pre build'){
-            steps{ gasrgw
-                script{  1
+            steps{ 
+                script{  
                     echo "Merge with RC"
                     try{   
                         echo "--copy default repository state "
