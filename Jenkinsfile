@@ -16,7 +16,7 @@ pipeline{
                     echo "Merge with RC"
                     try{   
                         echo "--copy default repository state "
-                        sh("\\cp -R /home/hlbx.ru/* .")
+                        sh("\\cp -R /home/docker/www/* .")
                         sh("git checkout master")
                         sh("git pull origin")
                     //    sh("git merge ${params.taskName} --squash > git_result") 
