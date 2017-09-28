@@ -13,6 +13,7 @@ pipeline{
         stage('Pre build'){
             steps{ 
                 script{  
+                    sleep 360
                     echo "Merge with RC"
                     try{   
                         echo "--copy default repository state "
