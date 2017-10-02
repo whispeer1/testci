@@ -97,7 +97,10 @@ pipeline{
 }
 
 def notifyFlockBot(taskName, stageResult, stageName, attachment){
-    sh('curl -H "Content-Type: application/json" -k -X PUT -d \'{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}\' ${FLOCK_BOT_URL}/task?name=' + taskName + "&token=${TOKEN}")
+    httpRequest  contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: '{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}', url: 'https://5b1ff981.ngrok.io/task?name=' + taskName
+
+
+ //   sh('curl -H "Content-Type: application/json" -k -X PUT -d \'{"stageResult": "'+ stageResult +'", "stage" : "'+ stageName +'"}\' ${FLOCK_BOT_URL}/task?name=' + taskName + "&token=${TOKEN}")
 }
 
 def notifyAboutSuccessStep(stage){
