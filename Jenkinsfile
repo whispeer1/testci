@@ -14,7 +14,6 @@ pipeline{
             steps{ 
                 script{  
                     notifyAboutStartStep("PRE_BUILD")
-                   // sleep 15
                     echo "Merge with RC"
                     try{   
                         echo "--copy default repository state "
@@ -28,10 +27,7 @@ pipeline{
                     //    }
                         notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
-                        notifyAboutFailedStep("PRE_BUILD")
-                     
-                       // notifyAboutSuccessStep("PRE_BUILD")
-                     
+                        notifyAboutFailedStep("PRE_BUILD")            
                         throw error
                     }
                 }
@@ -40,6 +36,7 @@ pipeline{
         stage('Create And Push Docker Image'){
             steps {
                 script{
+                    notifyAboutStartStep("DOCKER")
                     try{
                         echo "Docker Build"
                         def dockerImage = docker.build "${PROJECT_NAME}:${params.taskName}"    
@@ -58,6 +55,7 @@ pipeline{
         stage("Deploy to K8S"){
             steps{
                 script{
+                    notifyAboutStartStep("DEPLOY")
                     try {
                         sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' create namespace ${params.taskName}")
                         sh("kubectl --kubeconfig='/var/lib/jenkins/workspace/admin.conf' --namespace=${params.taskName} run bitrix --image=localhost:5000/bitrix:${params.taskName} --port=8080")
@@ -111,5 +109,8 @@ def notifyAboutStartStep(stage){
 }
 def notifyAboutFailedStep(stage){
     notifyFlockBot(params.taskName, "fail", stage, "")
+}
+def notifyAboutReadyTo(stage){
+    notifyFlockBot(params.taskName, "waiting", stage, "")
 }
 
