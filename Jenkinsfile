@@ -4,7 +4,7 @@ pipeline{
     //передавать как параметры джоба
     environment{
         PROJECT_NAME = 'bitrix'
-        FLOCK_BOT_URL = 'http://88.198.14.182:8009'
+        FLOCK_BOT_URL = 'https://5b1ff981.ngrok.io'
         K8S_MASTER_URL = 'https://88.198.14.182:6443'
         TOKEN = "1234567890"
     }
