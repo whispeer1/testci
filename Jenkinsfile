@@ -100,7 +100,7 @@ def notifyFlockBot(taskName, stageResult, stageName, attachment){
 def notifyAboutSuccessStep(stage){
     notifyFlockBot("task999", "done", stage, "")
 }
-def notifyAboutSuccessStep(stage){
+def notifyAboutStartStep(stage){
     notifyFlockBot("task999", "start", stage, "")
 }
 def notifyAboutFailedStep(stage){
