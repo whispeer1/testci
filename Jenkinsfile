@@ -14,7 +14,7 @@ pipeline{
             steps{ 
                 script{  
                     notifyAboutStartStep("PRE_BUILD")
-                    sleep 15
+                   // sleep 15
                     echo "Merge with RC"
                     try{   
                         echo "--copy default repository state "
@@ -29,6 +29,7 @@ pipeline{
                         notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
                         notifyAboutFailedStep("PRE_BUILD")
+                        sleep 5
                        // notifyAboutSuccessStep("PRE_BUILD")
                        echo "here error"
                         throw error
