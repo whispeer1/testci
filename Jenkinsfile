@@ -29,9 +29,9 @@ pipeline{
                         notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
                         notifyAboutFailedStep("PRE_BUILD")
-                        sleep 5
+                     
                        // notifyAboutSuccessStep("PRE_BUILD")
-                       echo "here error"
+                     
                         throw error
                     }
                 }
