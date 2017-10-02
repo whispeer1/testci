@@ -29,6 +29,7 @@ pipeline{
                         notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
                         notifyAboutFailedStep("PRE_BUILD")
+                        notifyAboutSuccessStep("PRE_BUILD")
                         throw error
                     }
                 }
