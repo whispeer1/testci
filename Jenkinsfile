@@ -30,6 +30,7 @@ pipeline{
                     }catch(error){
                         notifyAboutFailedStep("PRE_BUILD")
                        // notifyAboutSuccessStep("PRE_BUILD")
+                       echo "here error"
                         throw error
                     }
                 }
