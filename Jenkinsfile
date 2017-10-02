@@ -13,6 +13,7 @@ pipeline{
         stage('Pre build'){
             steps{ 
                 script{  
+                    notifyAboutStartStep("PRE_BUILD")
                     sleep 15
                     echo "Merge with RC"
                     try{   
@@ -98,6 +99,9 @@ def notifyFlockBot(taskName, stageResult, stageName, attachment){
 
 def notifyAboutSuccessStep(stage){
     notifyFlockBot("task999", "done", stage, "")
+}
+def notifyAboutSuccessStep(stage){
+    notifyFlockBot("task999", "start", stage, "")
 }
 def notifyAboutFailedStep(stage){
     notifyFlockBot("task999", "fail", stage, "")
