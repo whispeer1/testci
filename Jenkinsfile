@@ -17,14 +17,14 @@ pipeline{
                     echo "Merge with RC"
                     try{   
                         echo "--copy default repository state "
-                        sh("\\cp -R /home/docker/www/* .")
+                        sh("\\cp -R /home/docker/heroleague-site/* .")
                         sh("git checkout master")
                         sh("git pull origin")
-                    //    sh("git merge ${params.taskName} --squash > git_result") 
-                    //    def output = readFile('git_result').trim()
-                    //    if (output.indexOf("Automatic merge failed") > -1) {
-                    //        throw new IOException();
-                    //    }
+                        sh("git merge ${params.taskName} --squash > git_result") 
+                        def output = readFile('git_result').trim()
+                        if (output.indexOf("Automatic merge failed") > -1) {
+                           throw new IOException();
+                        }
                         notifyAboutSuccessStep("PRE_BUILD")
                     }catch(error){
                         notifyAboutFailedStep("PRE_BUILD")            
