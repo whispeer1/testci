@@ -20,7 +20,7 @@ pipeline{
                         sh("\\cp -R /home/docker/heroleague-site/* .")
                         sh("git checkout master")
                         sh("git pull origin")
-                        sh("git merge ${params.taskName} --squash > git_result") 
+                        sh("git merge ${params.commit} --squash > git_result") 
                         def output = readFile('git_result').trim()
                         if (output.indexOf("Automatic merge failed") > -1) {
                            throw new IOException();
